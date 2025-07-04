@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetterWriter Multi-Persona Journey Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F2FF 0%, #B3D9FF 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .personas-overview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .persona-chip {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .persona-chip-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            color: #003D79;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .persona-chip.primary {
+            border-color: #4CAF50;
+        }
+        
+        .persona-chip.secondary {
+            border-color: #FF9800;
+        }
+        
+        .persona-chip.tertiary {
+            border-color: #e74c3c;
+        }
+        
+        .persona-chip h3 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .persona-chip p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .journey-content {
+            padding: 0;
+        }
+        
+        .stages-container {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+        
+        .stage-section {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #003D79;
+        }
+        
+        .stage-number {
+            background: #003D79;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .stage-title {
+            flex: 1;
+        }
+        
+        .stage-title h2 {
+            color: #003D79;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .stage-title p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .persona-journey {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid;
+        }
+        
+        .persona-journey.primary {
+            border-top-color: #4CAF50;
+        }
+        
+        .persona-journey.secondary {
+            border-top-color: #FF9800;
+        }
+        
+        .persona-journey.tertiary {
+            border-top-color: #e74c3c;
+        }
+        
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .persona-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #003D79;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        
+        .persona-name {
+            font-weight: 600;
+            color: #003D79;
+            font-size: 1rem;
+        }
+        
+        .persona-type {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .journey-element {
+            margin-bottom: 20px;
+        }
+        
+        .journey-element h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .element-content {
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .touchpoint {
+            background: #e3f2fd;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid #003D79;
+            margin-bottom: 8px;
+        }
+        
+        .emotion {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .emotion-face {
+            font-size: 1.2rem;
+        }
+        
+        .pain-point {
+            background: #ffebee;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid #e74c3c;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        
+        .opportunity {
+            background: #e8f5e8;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border-left: 3px solid #4CAF50;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+        }
+        
+        .key-differences {
+            background: #fff3e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 20px;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .key-differences h2 {
+            color: #003D79;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+        
+        .differences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .difference-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .difference-card h3 {
+            color: #003D79;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .difference-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .difference-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .difference-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #FF9800;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 1200px) {
+            .personas-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .personas-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stage-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .differences-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>LetterWriter Multi-Persona Journey Map</h1>
+            <p>How different user types experience the letter upload flow</p>
+            
+            <div class="personas-overview">
+                <div class="persona-chip primary">
+                    <div class="persona-chip-avatar">RP</div>
+                    <h3>Dr. Rajesh Patel</h3>
+                    <p>Faculty - Regular User</p>
+                </div>
+                <div class="persona-chip secondary">
+                    <div class="persona-chip-avatar">MR</div>
+                    <h3>Maria Rodriguez</h3>
+                    <p>Admin - Bulk Handler</p>
+                </div>
+                <div class="persona-chip tertiary">
+                    <div class="persona-chip-avatar">KW</div>
+                    <h3>Dr. Keisha Williams</h3>
+                    <p>Clinical - Occasional User</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="journey-content">
+            <div class="stages-container">
+                <!-- Stage 1 -->
+                <div class="stage-section">
+                    <div class="stage-header">
+                        <div class="stage-number">1</div>
+                        <div class="stage-title">
+                            <h2>Request Received</h2>
+                            <p>Initial contact and task awareness</p>
+                        </div>
+                    </div>
+                    
+                    <div class="personas-grid">
+                        <div class="persona-journey primary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">RP</div>
+                                <div>
+                                    <div class="persona-name">Dr. Rajesh Patel</div>
+                                    <div class="persona-type">Faculty</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📧 How they receive it</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Email from student or admin</div>
+                                    <div class="touchpoint">Recognizes the request type</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😐</div>
+                                    <div>Familiar routine - knows what to expect</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">May delay if busy with research/teaching</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey secondary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">MR</div>
+                                <div>
+                                    <div class="persona-name">Maria Rodriguez</div>
+                                    <div class="persona-type">Admin Assistant</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📧 How they receive it</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Delegated by faculty member</div>
+                                    <div class="touchpoint">Multiple requests at once</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😤</div>
+                                    <div>Focused but pressured - has deadline</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">Lacks context about students</div>
+                                    <div class="pain-point">Unclear which letters are priority</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey tertiary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">KW</div>
+                                <div>
+                                    <div class="persona-name">Dr. Keisha Williams</div>
+                                    <div class="persona-type">Clinical Supervisor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📧 How they receive it</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Infrequent email request</div>
+                                    <div class="touchpoint">May not remember process</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😰</div>
+                                    <div>Slightly anxious - unfamiliar territory</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">Forgets process between uses</div>
+                                    <div class="pain-point">Limited time between patients</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stage 2 -->
+                <div class="stage-section">
+                    <div class="stage-header">
+                        <div class="stage-number">2</div>
+                        <div class="stage-title">
+                            <h2>Access Flow Decision</h2>
+                            <p>Guest vs Login choice point</p>
+                        </div>
+                    </div>
+                    
+                    <div class="personas-grid">
+                        <div class="persona-journey primary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">RP</div>
+                                <div>
+                                    <div class="persona-name">Dr. Rajesh Patel</div>
+                                    <div class="persona-type">Faculty</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>🎯 Decision making</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Considers both options</div>
+                                    <div class="touchpoint">May choose login for tracking</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">🤔</div>
+                                    <div>Deliberating - wants to make right choice</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>💡 Opportunities</h4>
+                                <div class="element-content">
+                                    <div class="opportunity">Clear benefits explanation helps decision</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey secondary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">MR</div>
+                                <div>
+                                    <div class="persona-name">Maria Rodriguez</div>
+                                    <div class="persona-type">Admin Assistant</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>🎯 Decision making</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Chooses guest - no faculty credentials</div>
+                                    <div class="touchpoint">Speed over convenience</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">⚡</div>
+                                    <div>Efficient - knows exactly what to do</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">Can't track submissions later</div>
+                                    <div class="pain-point">Must use faculty's email</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey tertiary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">KW</div>
+                                <div>
+                                    <div class="persona-name">Dr. Keisha Williams</div>
+                                    <div class="persona-type">Clinical Supervisor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>🎯 Decision making</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Always chooses guest</div>
+                                    <div class="touchpoint">Avoids account creation</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😅</div>
+                                    <div>Relief - simpler option available</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>💡 Opportunities</h4>
+                                <div class="element-content">
+                                    <div class="opportunity">Guest path saves time for one-time users</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stage 3 -->
+                <div class="stage-section">
+                    <div class="stage-header">
+                        <div class="stage-number">3</div>
+                        <div class="stage-title">
+                            <h2>Verification & Setup</h2>
+                            <p>Email verification and terms acceptance</p>
+                        </div>
+                    </div>
+                    
+                    <div class="personas-grid">
+                        <div class="persona-journey primary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">RP</div>
+                                <div>
+                                    <div class="persona-name">Dr. Rajesh Patel</div>
+                                    <div class="persona-type">Faculty</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📝 Actions</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Enters information carefully</div>
+                                    <div class="touchpoint">Reads terms and conditions</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😊</div>
+                                    <div>Confident - process feels legitimate</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">15-minute timeout feels rushed</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey secondary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">MR</div>
+                                <div>
+                                    <div class="persona-name">Maria Rodriguez</div>
+                                    <div class="persona-type">Admin Assistant</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📝 Actions</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Uses faculty's name and email</div>
+                                    <div class="touchpoint">Skips terms reading - familiar</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">🏃‍♀️</div>
+                                    <div>Rushing - has more letters to submit</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">Email goes to faculty, not her</div>
+                                    <div class="pain-point">Timeout pressure with multiple letters</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey tertiary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">KW</div>
+                                <div>
+                                    <div class="persona-name">Dr. Keisha Williams</div>
+                                    <div class="persona-type">Clinical Supervisor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📝 Actions</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Hesitates on email verification</div>
+                                    <div class="touchpoint">Concerned about timeout</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😰</div>
+                                    <div>Anxious - worried about making mistakes</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">May abandon if email doesn't arrive</div>
+                                    <div class="pain-point">Timeout too short for careful reading</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stage 4 -->
+                <div class="stage-section">
+                    <div class="stage-header">
+                        <div class="stage-number">4</div>
+                        <div class="stage-title">
+                            <h2>Letter Upload</h2>
+                            <p>File selection and upload process</p>
+                        </div>
+                    </div>
+                    
+                    <div class="personas-grid">
+                        <div class="persona-journey primary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">RP</div>
+                                <div>
+                                    <div class="persona-name">Dr. Rajesh Patel</div>
+                                    <div class="persona-type">Faculty</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📤 Upload approach</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Uses file picker (familiar)</div>
+                                    <div class="touchpoint">Double-checks student info</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😌</div>
+                                    <div>Focused - main task completion</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>💡 Opportunities</h4>
+                                <div class="element-content">
+                                    <div class="opportunity">Clear progress indicators reassure</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey secondary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">MR</div>
+                                <div>
+                                    <div class="persona-name">Maria Rodriguez</div>
+                                    <div class="persona-type">Admin Assistant</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📤 Upload approach</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Drag-and-drop for efficiency</div>
+                                    <div class="touchpoint">Has letters pre-organized</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">⚡</div>
+                                    <div>In the zone - batch processing mode</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">Can't bulk upload multiple letters</div>
+                                    <div class="pain-point">Must repeat process for each student</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey tertiary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">KW</div>
+                                <div>
+                                    <div class="persona-name">Dr. Keisha Williams</div>
+                                    <div class="persona-type">Clinical Supervisor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>📤 Upload approach</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Confused by drag-and-drop</div>
+                                    <div class="touchpoint">Uses browse button</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😓</div>
+                                    <div>Stressed - technology intimidation</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">May have wrong file format</div>
+                                    <div class="pain-point">Needs clear error messages</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stage 5 -->
+                <div class="stage-section">
+                    <div class="stage-header">
+                        <div class="stage-number">5</div>
+                        <div class="stage-title">
+                            <h2>Confirmation & Completion</h2>
+                            <p>Success feedback and next steps</p>
+                        </div>
+                    </div>
+                    
+                    <div class="personas-grid">
+                        <div class="persona-journey primary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">RP</div>
+                                <div>
+                                    <div class="persona-name">Dr. Rajesh Patel</div>
+                                    <div class="persona-type">Faculty</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>✅ Completion behavior</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Reads confirmation carefully</div>
+                                    <div class="touchpoint">May create account after</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😄</div>
+                                    <div>Satisfied - task completed successfully</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>💡 Opportunities</h4>
+                                <div class="element-content">
+                                    <div class="opportunity">Account creation upsell works well</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey secondary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">MR</div>
+                                <div>
+                                    <div class="persona-name">Maria Rodriguez</div>
+                                    <div class="persona-type">Admin Assistant</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>✅ Completion behavior</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Quickly moves to next letter</div>
+                                    <div class="touchpoint">May not read confirmation fully</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">💨</div>
+                                    <div>Productive - one task down, more to go</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>⚠️ Pain points</h4>
+                                <div class="element-content">
+                                    <div class="pain-point">No batch completion tracking</div>
+                                    <div class="pain-point">Must remember which letters are done</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-journey tertiary">
+                            <div class="persona-header">
+                                <div class="persona-avatar">KW</div>
+                                <div>
+                                    <div class="persona-name">Dr. Keisha Williams</div>
+                                    <div class="persona-type">Clinical Supervisor</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>✅ Completion behavior</h4>
+                                <div class="element-content">
+                                    <div class="touchpoint">Relief at seeing success message</div>
+                                    <div class="touchpoint">Immediately closes browser</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>😊 Emotional state</h4>
+                                <div class="emotion">
+                                    <div class="emotion-face">😌</div>
+                                    <div>Relieved - avoided technical difficulties</div>
+                                </div>
+                            </div>
+                            
+                            <div class="journey-element">
+                                <h4>💡 Opportunities</h4>
+                                <div class="element-content">
+                                    <div class="opportunity">Clear success messaging builds confidence</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="key-differences">
+            <h2>Key Persona Differences & Insights</h2>
+            <div class="differences-grid">
+                <div class="difference-card">
+                    <h3>Access Preferences</h3>
+                    <ul class="difference-list">
+                        <li>Faculty consider both guest/login options</li>
+                        <li>Admins always choose guest (no credentials)</li>
+                        <li>Clinical users avoid accounts completely</li>
+                    </ul>
+                </div>
+                
+                <div class="difference-card">
+                    <h3>Upload Behaviors</h3>
+                    <ul class="difference-list">
+                        <li>Faculty use file picker (familiar)</li>
+                        <li>Admins prefer drag-and-drop (efficiency)</li>
+                        <li>Clinical users need browse button fallback</li>
+                    </ul>
+                </div>
+                
+                <div class="difference-card">
+                    <h3>Pain Point Patterns</h3>
+                    <ul class="difference-list">
+                        <li>Faculty: Time pressure from other duties</li>
+                        <li>Admins: Bulk processing limitations</li>
+                        <li>Clinical: Technology intimidation and forgetting process</li>
+                    </ul>
+                </div>
+                
+                <div class="difference-card">
+                    <h3>Success Factors</h3>
+                    <ul class="difference-list">
+                        <li>Faculty: Clear tracking and account benefits</li>
+                        <li>Admins: Speed and batch processing capability</li>
+                        <li>Clinical: Simple, error-free one-time experience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

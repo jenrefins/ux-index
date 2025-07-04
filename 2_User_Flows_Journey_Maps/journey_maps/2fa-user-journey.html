@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA User Journey Map</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #E6F2FF 0%, #B3D9FF 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .journey-content {
+            padding: 2rem;
+        }
+        
+        .user-scenario {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #003D79;
+        }
+        
+        .scenario-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #003D79;
+            margin-bottom: 0.5rem;
+        }
+        
+        .journey-phase {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .journey-phase:hover {
+            border-color: #003D79;
+            box-shadow: 0 4px 15px rgba(0, 61, 121, 0.1);
+        }
+        
+        .phase-header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .phase-number {
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .phase-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .phase-content {
+            padding: 1.5rem;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .content-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #003D79;
+        }
+        
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #003D79;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-content {
+            font-size: 0.85rem;
+            color: #495057;
+            line-height: 1.4;
+        }
+        
+        .section-content ul {
+            list-style: none;
+            margin: 0;
+        }
+        
+        .section-content li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+        
+        .section-content li:before {
+            content: "•";
+            color: #003D79;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .emotion-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+        
+        .emotion-positive {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .emotion-neutral {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .emotion-negative {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .pain-point {
+            background: #ffebee;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.25rem 0;
+            border-left: 3px solid #d32f2f;
+            font-size: 0.8rem;
+        }
+        
+        .opportunity {
+            background: #e8f5e8;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.25rem 0;
+            border-left: 3px solid #2e7d32;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .journey-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2FA User Journey Map</h1>
+            <p>AAMC Two-Factor Authentication - Complete User Experience</p>
+        </div>
+        
+        <div class="journey-content">
+            <div class="user-scenario">
+                <div class="scenario-title">Primary Scenario: Faculty Member (Dr. Sarah Chen)</div>
+                <p>Medical school faculty member setting up 2FA for the first time to access AAMC services securely. She's moderately tech-savvy but values security and wants a smooth, reliable authentication process.</p>
+            </div>
+            
+            <div class="journey-phase">
+                <div class="phase-header">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">Discovery & Decision</div>
+                </div>
+                <div class="phase-content">
+                    <div class="content-grid">
+                        <div class="content-section">
+                            <div class="section-title">🎯 User Actions</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>Sees 2FA prompt in AAMC account</li>
+                                    <li>Reads security messaging</li>
+                                    <li>Decides to enable 2FA</li>
+                                    <li>Clicks "Set Up 2FA"</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="section-title">💭 Emotions & Mindset</div>
+                            <div class="section-content">
+                                <span class="emotion-indicator emotion-neutral">Cautious</span>
+                                <span class="emotion-indicator emotion-neutral">Curious</span><br><br>
+                                "I want to keep my account secure, but I hope this won't be too complicated or time-consuming."
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <div class="pain-point">❌ Unclear why 2FA is necessary or beneficial</div>
+                        <div class="pain-point">❌ Worried about losing access to important systems</div>
+                        <div class="opportunity">✅ Clear security benefit messaging with real examples</div>
+                        <div class="opportunity">✅ Estimated time to complete setup</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="journey-phase">
+                <div class="phase-header">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">Contact Information Setup</div>
+                </div>
+                <div class="phase-content">
+                    <div class="content-grid">
+                        <div class="content-section">
+                            <div class="section-title">🎯 User Actions</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>Confirms email address</li>
+                                    <li>Adds mobile phone number</li>
+                                    <li>Handles phone format errors</li>
+                                    <li>Chooses verification methods</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="section-title">💭 Emotions & Mindset</div>
+                            <div class="section-content">
+                                <span class="emotion-indicator emotion-neutral">Focused</span>
+                                <span class="emotion-indicator emotion-neutral">Slightly anxious</span><br><br>
+                                "I need to get this information right so the system works properly."
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <div class="pain-point">❌ Phone number format confusion and errors</div>
+                        <div class="pain-point">❌ "Number already associated" error with no clear solution</div>
+                        <div class="opportunity">✅ Real-time phone format validation and suggestions</div>
+                        <div class="opportunity">✅ Clear progress indicators showing setup steps</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="journey-phase">
+                <div class="phase-header">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">Verification Process</div>
+                </div>
+                <div class="phase-content">
+                    <div class="content-grid">
+                        <div class="content-section">
+                            <div class="section-title">🎯 User Actions</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>Receives and enters email verification code</li>
+                                    <li>Receives and enters SMS verification code</li>
+                                    <li>Handles expired or incorrect codes</li>
+                                    <li>Confirms setup completion</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="section-title">💭 Emotions & Mindset</div>
+                            <div class="section-content">
+                                <span class="emotion-indicator emotion-positive">Relief</span>
+                                <span class="emotion-indicator emotion-positive">Accomplished</span><br><br>
+                                "Great! The codes are working and I'm making progress."
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <div class="pain-point">❌ Code expiration creates time pressure</div>
+                        <div class="pain-point">❌ SMS delivery delays cause uncertainty</div>
+                        <div class="opportunity">✅ Clear countdown timers for code expiration</div>
+                        <div class="opportunity">✅ Easy switching between email and SMS methods</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="journey-phase">
+                <div class="phase-header">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">First Login Experience</div>
+                </div>
+                <div class="phase-content">
+                    <div class="content-grid">
+                        <div class="content-section">
+                            <div class="section-title">🎯 User Actions</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>Logs out and back in to test</li>
+                                    <li>Chooses verification method (email or SMS)</li>
+                                    <li>Enters one-time code</li>
+                                    <li>Decides whether to trust device</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="section-title">💭 Emotions & Mindset</div>
+                            <div class="section-content">
+                                <span class="emotion-indicator emotion-positive">Confident</span>
+                                <span class="emotion-indicator emotion-positive">Proud</span><br><br>
+                                "I did it! The security is working and I understand the process."
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <div class="pain-point">❌ Uncertainty about device trust implications</div>
+                        <div class="pain-point">❌ Forgetting which verification method works best</div>
+                        <div class="opportunity">✅ Clear explanation of device trust benefits and risks</div>
+                        <div class="opportunity">✅ Success celebration and next steps guidance</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="journey-phase">
+                <div class="phase-header">
+                    <div class="phase-number">5</div>
+                    <div class="phase-title">Ongoing Use & Management</div>
+                </div>
+                <div class="phase-content">
+                    <div class="content-grid">
+                        <div class="content-section">
+                            <div class="section-title">🎯 User Actions</div>
+                            <div class="section-content">
+                                <ul>
+                                    <li>Regular login with 2FA</li>
+                                    <li>Updates phone/email when changed</li>
+                                    <li>Manages trusted devices</li>
+                                    <li>Seeks help when issues arise</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="content-section">
+                            <div class="section-title">💭 Emotions & Mindset</div>
+                            <div class="section-content">
+                                <span class="emotion-indicator emotion-positive">Comfortable</span>
+                                <span class="emotion-indicator emotion-positive">Secure</span><br><br>
+                                "This is part of my routine now. I feel confident my account is protected."
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <div class="pain-point">❌ Hard to find 2FA settings when contact info changes</div>
+                        <div class="pain-point">❌ Forgotten trusted device settings cause confusion</div>
+                        <div class="opportunity">✅ Proactive reminders to update contact information</div>
+                        <div class="opportunity">✅ Easy access to 2FA settings from main dashboard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

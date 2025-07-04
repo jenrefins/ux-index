@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetterWriter User Personas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F2FF 0%, #B3D9FF 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            padding: 40px;
+        }
+        
+        .persona-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-top: 6px solid;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .persona-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .persona-card.primary {
+            border-top-color: #003D79;
+        }
+        
+        .persona-card.secondary {
+            border-top-color: #e74c3c;
+        }
+        
+        .persona-card.tertiary {
+            border-top-color: #f39c12;
+        }
+        
+        .persona-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .persona-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .persona-basic {
+            flex: 1;
+        }
+        
+        .persona-name {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .persona-title {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .persona-type {
+            background: #003D79;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .persona-type.secondary-user {
+            background: #e74c3c;
+        }
+        
+        .persona-type.tertiary-user {
+            background: #f39c12;
+        }
+        
+        .section {
+            margin-bottom: 25px;
+        }
+        
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #003D79;
+        }
+        
+        .secondary .section-content {
+            border-left-color: #e74c3c;
+        }
+        
+        .tertiary .section-content {
+            border-left-color: #f39c12;
+        }
+        
+        .demographics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .demo-item {
+            text-align: center;
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .demo-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .demo-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .goals-list, .frustrations-list, .behaviors-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .goals-list li, .frustrations-list li, .behaviors-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .goals-list li:last-child, .frustrations-list li:last-child, .behaviors-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .icon {
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .quote {
+            background: #f8f9fa;
+            border-left: 4px solid #003D79;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .quote-text {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .quote-author {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .tech-comfort {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .comfort-bar {
+            flex: 1;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .comfort-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .comfort-low { width: 30%; background: #e74c3c; }
+        .comfort-medium { width: 60%; background: #f39c12; }
+        .comfort-high { width: 85%; background: #2ecc71; }
+        
+        @media (max-width: 768px) {
+            .personas-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .persona-card {
+                min-width: 100%;
+            }
+            
+            .demographics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>LetterWriter User Personas</h1>
+            <p>Key user types identified from the letter upload journey analysis</p>
+        </div>
+        
+        <div class="personas-grid">
+            <!-- Primary Persona -->
+            <div class="persona-card primary">
+                <div class="persona-header">
+                    <div class="persona-avatar">RP</div>
+                    <div class="persona-basic">
+                        <div class="persona-name">Dr. Rajesh Patel</div>
+                        <div class="persona-title">Associate Professor of Biology</div>
+                        <div class="persona-type">Primary User</div>
+                    </div>
+                </div>
+                
+                <div class="demographics">
+                    <div class="demo-item">
+                        <div class="demo-value">45</div>
+                        <div class="demo-label">Age</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">15 yrs</div>
+                        <div class="demo-label">Experience</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">20+</div>
+                        <div class="demo-label">Letters/Year</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>🎯 Goals & Motivations</h3>
+                    <div class="section-content">
+                        <ul class="goals-list">
+                            <li><span class="icon">✅</span> Complete letter submission quickly and efficiently</li>
+                            <li><span class="icon">🔒</span> Avoid creating yet another account or login</li>
+                            <li><span class="icon">📝</span> Ensure letters reach the right destination</li>
+                            <li><span class="icon">⏰</span> Minimize time spent on administrative tasks</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>😤 Frustrations & Pain Points</h3>
+                    <div class="section-content">
+                        <ul class="frustrations-list">
+                            <li><span class="icon">🤔</span> Unfamiliar with AAMC platform and processes</li>
+                            <li><span class="icon">📧</span> Worried about emails going to spam</li>
+                            <li><span class="icon">❓</span> Unclear technical requirements or file formats</li>
+                            <li><span class="icon">⏳</span> No clear confirmation that submission worked</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>💻 Behaviors & Preferences</h3>
+                    <div class="section-content">
+                        <ul class="behaviors-list">
+                            <li><span class="icon">🖱️</span> Prefers familiar, simple interfaces</li>
+                            <li><span class="icon">📱</span> May use mobile or tablet for quick tasks</li>
+                            <li><span class="icon">🔄</span> Expects immediate feedback and confirmation</li>
+                            <li><span class="icon">📄</span> Comfortable with standard file operations</li>
+                        </ul>
+                        
+                        <div class="tech-comfort">
+                            <span>Tech Comfort:</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-medium"></div>
+                            </div>
+                            <span>Moderate</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quote">
+                    <div class="quote-text">"I just want to upload the letter and know it got there. I don't have time to figure out another new system."</div>
+                    <div class="quote-author">- Typical faculty member feedback</div>
+                </div>
+            </div>
+            
+            <!-- Secondary Persona -->
+            <div class="persona-card secondary">
+                <div class="persona-header">
+                    <div class="persona-avatar">MR</div>
+                    <div class="persona-basic">
+                        <div class="persona-name">Maria Rodriguez</div>
+                        <div class="persona-title">Department Administrative Assistant</div>
+                        <div class="persona-type secondary-user">Secondary User</div>
+                    </div>
+                </div>
+                
+                <div class="demographics">
+                    <div class="demo-item">
+                        <div class="demo-value">38</div>
+                        <div class="demo-label">Age</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">8 yrs</div>
+                        <div class="demo-label">Experience</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">50+</div>
+                        <div class="demo-label">Letters/Year</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>🎯 Goals & Motivations</h3>
+                    <div class="section-content">
+                        <ul class="goals-list">
+                            <li><span class="icon">🏃‍♂️</span> Handle tasks delegated by busy faculty</li>
+                            <li><span class="icon">📊</span> Process multiple letters efficiently</li>
+                            <li><span class="icon">✔️</span> Ensure accuracy and completeness</li>
+                            <li><span class="icon">🤝</span> Maintain good relationships with faculty</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>😤 Frustrations & Pain Points</h3>
+                    <div class="section-content">
+                        <ul class="frustrations-list">
+                            <li><span class="icon">📋</span> Lacks context about individual students</li>
+                            <li><span class="icon">🔑</span> May not have access to faculty credentials</li>
+                            <li><span class="icon">⚡</span> Under pressure to complete tasks quickly</li>
+                            <li><span class="icon">🎯</span> Responsible for others' work quality</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>💻 Behaviors & Preferences</h3>
+                    <div class="section-content">
+                        <ul class="behaviors-list">
+                            <li><span class="icon">⚡</span> Highly efficient with administrative systems</li>
+                            <li><span class="icon">🔄</span> Follows established procedures carefully</li>
+                            <li><span class="icon">📞</span> Likely to call for help when stuck</li>
+                            <li><span class="icon">🗂️</span> Excellent at organizing and tracking tasks</li>
+                        </ul>
+                        
+                        <div class="tech-comfort">
+                            <span>Tech Comfort:</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-high"></div>
+                            </div>
+                            <span>High</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quote">
+                    <div class="quote-text">"I handle a lot of these for the professors. I need the system to be straightforward so I can get through them quickly without making mistakes."</div>
+                    <div class="quote-author">- Administrative support staff</div>
+                </div>
+            </div>
+            
+            <!-- Tertiary Persona -->
+            <div class="persona-card tertiary">
+                <div class="persona-header">
+                    <div class="persona-avatar">KW</div>
+                    <div class="persona-basic">
+                        <div class="persona-name">Dr. Keisha Williams</div>
+                        <div class="persona-title">Clinical Supervisor</div>
+                        <div class="persona-type tertiary-user">Occasional User</div>
+                    </div>
+                </div>
+                
+                <div class="demographics">
+                    <div class="demo-item">
+                        <div class="demo-value">52</div>
+                        <div class="demo-label">Age</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">22 yrs</div>
+                        <div class="demo-label">Experience</div>
+                    </div>
+                    <div class="demo-item">
+                        <div class="demo-value">5</div>
+                        <div class="demo-label">Letters/Year</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>🎯 Goals & Motivations</h3>
+                    <div class="section-content">
+                        <ul class="goals-list">
+                            <li><span class="icon">🏥</span> Balance clinical duties with academic responsibilities</li>
+                            <li><span class="icon">📝</span> Provide meaningful recommendations for students</li>
+                            <li><span class="icon">⏰</span> Complete tasks between patient appointments</li>
+                            <li><span class="icon">🎯</span> Avoid technical complications</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>😤 Frustrations & Pain Points</h3>
+                    <div class="section-content">
+                        <ul class="frustrations-list">
+                            <li><span class="icon">⏰</span> Very limited time for administrative tasks</li>
+                            <li><span class="icon">❓</span> Infrequent use leads to forgotten processes</li>
+                            <li><span class="icon">🔐</span> Strong preference to avoid new accounts</li>
+                            <li><span class="icon">📱</span> Often needs to work from mobile devices</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>💻 Behaviors & Preferences</h3>
+                    <div class="section-content">
+                        <ul class="behaviors-list">
+                            <li><span class="icon">🚀</span> Wants immediate, obvious next steps</li>
+                            <li><span class="icon">💾</span> Prefers to complete tasks in one session</li>
+                            <li><span class="icon">📞</span> May abandon task if it's too complex</li>
+                            <li><span class="icon">🔄</span> Expects systems to "just work"</li>
+                        </ul>
+                        
+                        <div class="tech-comfort">
+                            <span>Tech Comfort:</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-low"></div>
+                            </div>
+                            <span>Limited</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quote">
+                    <div class="quote-text">"I only do this a few times a year. It needs to be simple enough that I don't have to remember how to do it each time."</div>
+                    <div class="quote-author">- Occasional clinical supervisor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

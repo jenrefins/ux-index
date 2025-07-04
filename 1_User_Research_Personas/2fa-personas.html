@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA User Personas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #E6F2FF 0%, #B3D9FF 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+        
+        .persona-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px solid #e9ecef;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .persona-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0, 61, 121, 0.15);
+            border-color: #003D79;
+        }
+        
+        .persona-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 1.5rem;
+            border-bottom: 3px solid #003D79;
+        }
+        
+        .persona-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+        }
+        
+        .persona-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #003D79;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+        
+        .persona-role {
+            color: #6c757d;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .persona-content {
+            padding: 1.5rem;
+        }
+        
+        .persona-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #003D79;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-content {
+            font-size: 0.9rem;
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #003D79;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        
+        .pain-points {
+            list-style: none;
+        }
+        
+        .pain-points li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .pain-points li:before {
+            content: "😤";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+        
+        .pain-points li:last-child {
+            border-bottom: none;
+        }
+        
+        .goals {
+            list-style: none;
+        }
+        
+        .goals li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .goals li:before {
+            content: "🎯";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+        
+        .goals li:last-child {
+            border-bottom: none;
+        }
+        
+        .tech-comfort {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .comfort-bar {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .comfort-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .comfort-beginner { width: 25%; }
+        .comfort-intermediate { width: 60%; }
+        .comfort-advanced { width: 90%; }
+        
+        .quote {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #003D79;
+            font-style: italic;
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .personas-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>2FA User Personas</h1>
+            <p>Key user archetypes for AAMC Two-Factor Authentication system</p>
+        </div>
+        
+        <div class="personas-grid">
+            <!-- Persona 1: Security-Conscious Faculty -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar">SC</div>
+                    <div class="persona-name">Dr. Sarah Chen</div>
+                    <div class="persona-role">Medical School Faculty</div>
+                </div>
+                <div class="persona-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value">42</span>
+                            <div class="stat-label">Years Old</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">15</span>
+                            <div class="stat-label">Years Teaching</div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🖥️ Tech Comfort Level</div>
+                        <div class="tech-comfort">
+                            <span>Intermediate</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-intermediate"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">📱 Digital Behavior</div>
+                        <div class="section-content">
+                            Uses AAMC systems weekly for student evaluations and research coordination. Comfortable with technology but prefers simple, reliable processes. Has experienced security issues before and now values protection over convenience.
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🎯 Goals with 2FA</div>
+                        <ul class="goals">
+                            <li>Protect sensitive student and research data</li>
+                            <li>Comply with institutional security requirements</li>
+                            <li>Set up once and forget about complexity</li>
+                            <li>Maintain quick access for time-sensitive tasks</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">😤 Pain Points</div>
+                        <ul class="pain-points">
+                            <li>Worried about losing access during critical deadlines</li>
+                            <li>Concerned about SMS delivery delays</li>
+                            <li>Unsure which verification method is most reliable</li>
+                            <li>Frustrated by overly technical error messages</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quote">
+                        "I want my accounts to be secure, but I can't afford to be locked out when I need to submit student grades or access research data."
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Persona 2: Tech-Averse Administrator -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar">MM</div>
+                    <div class="persona-name">Margaret Martinez</div>
+                    <div class="persona-role">Administrative Coordinator</div>
+                </div>
+                <div class="persona-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value">58</span>
+                            <div class="stat-label">Years Old</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">22</span>
+                            <div class="stat-label">Years at AAMC</div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🖥️ Tech Comfort Level</div>
+                        <div class="tech-comfort">
+                            <span>Beginner</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-beginner"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">📱 Digital Behavior</div>
+                        <div class="section-content">
+                            Uses AAMC systems daily for administrative tasks but relies heavily on established routines. Prefers phone support to self-service. Uses smartphone primarily for calls and texts, rarely downloads new apps.
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🎯 Goals with 2FA</div>
+                        <ul class="goals">
+                            <li>Complete setup without technical assistance</li>
+                            <li>Maintain familiar login routine</li>
+                            <li>Have reliable access to email verification</li>
+                            <li>Know who to call if something goes wrong</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">😤 Pain Points</div>
+                        <ul class="pain-points">
+                            <li>Intimidated by new security requirements</li>
+                            <li>Fears making mistakes during setup</li>
+                            <li>Uncomfortable entering personal phone number</li>
+                            <li>Worried about remembering new steps</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quote">
+                        "I've been doing my job the same way for years. I just need this security thing to work without changing everything else."
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Persona 3: Tech-Savvy Student -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar">AK</div>
+                    <div class="persona-name">Alex Kim</div>
+                    <div class="persona-role">Medical Student (MS3)</div>
+                </div>
+                <div class="persona-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value">26</span>
+                            <div class="stat-label">Years Old</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">3</span>
+                            <div class="stat-label">Year in Med School</div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🖥️ Tech Comfort Level</div>
+                        <div class="tech-comfort">
+                            <span>Advanced</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-advanced"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">📱 Digital Behavior</div>
+                        <div class="section-content">
+                            Uses AAMC systems for applications, exam scheduling, and residency matching. Heavy smartphone user with multiple 2FA apps already installed. Expects modern, mobile-optimized interfaces and quick setup processes.
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🎯 Goals with 2FA</div>
+                        <ul class="goals">
+                            <li>Quick, streamlined setup process</li>
+                            <li>Mobile-first experience that works anywhere</li>
+                            <li>Integration with existing security apps</li>
+                            <li>Backup recovery options for device changes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">😤 Pain Points</div>
+                        <ul class="pain-points">
+                            <li>Frustrated by outdated interfaces and slow processes</li>
+                            <li>Annoyed by SMS-only verification options</li>
+                            <li>Concerned about account security during clinical rotations</li>
+                            <li>Impatient with lengthy verification steps</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quote">
+                        "I already use 2FA for everything else. Just make it fast and let me use my authenticator app like everywhere else does."
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Persona 4: Occasional User -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar">RJ</div>
+                    <div class="persona-name">Dr. Robert Johnson</div>
+                    <div class="persona-role">External Reviewer</div>
+                </div>
+                <div class="persona-content">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value">67</span>
+                            <div class="stat-label">Years Old</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">2-3x</span>
+                            <div class="stat-label">Logins/Year</div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🖥️ Tech Comfort Level</div>
+                        <div class="tech-comfort">
+                            <span>Intermediate</span>
+                            <div class="comfort-bar">
+                                <div class="comfort-fill comfort-intermediate"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">📱 Digital Behavior</div>
+                        <div class="section-content">
+                            Accesses AAMC systems infrequently for committee work and peer reviews. Long gaps between logins mean he often forgets processes. Uses technology when necessary but doesn't stay current with new features.
+                        </div>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">🎯 Goals with 2FA</div>
+                        <ul class="goals">
+                            <li>Simple setup that he won't forget</li>
+                            <li>Clear reminders about the process</li>
+                            <li>Email-based verification (more reliable)</li>
+                            <li>Easy way to get help when needed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="persona-section">
+                        <div class="section-title">😤 Pain Points</div>
+                        <ul class="pain-points">
+                            <li>Forgets 2FA process between long login gaps</li>
+                            <li>Phone number may change between uses</li>
+                            <li>Unclear about device trust settings</li>
+                            <li>Frustrated by expired codes during slow entry</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="quote">
+                        "I only log in a few times a year for committee work. The system needs to be simple enough that I remember it months later."
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Summary Section -->
+        <div style="padding: 2rem; background: #f8f9fa; margin-top: 2rem;">
+            <h2 style="color: #003D79; margin-bottom: 1rem; text-align: center;">Key Design Implications</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #003D79;">
+                    <h3 style="color: #003D79; margin-bottom: 0.5rem;">Progressive Enhancement</h3>
+                    <p style="font-size: 0.9rem; color: #495057;">Support both basic (email/SMS) and advanced (app-based) authentication methods to serve all user comfort levels.</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #003D79;">
+                    <h3 style="color: #003D79; margin-bottom: 0.5rem;">Clear Communication</h3>
+                    <p style="font-size: 0.9rem; color: #495057;">Provide upfront explanations, progress indicators, and contextual help to reduce anxiety and confusion.</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #003D79;">
+                    <h3 style="color: #003D79; margin-bottom: 0.5rem;">Flexible Verification</h3>
+                    <p style="font-size: 0.9rem; color: #495057;">Offer email and SMS options with easy switching to accommodate different user preferences and reliability needs.</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid #003D79;">
+                    <h3 style="color: #003D79; margin-bottom: 0.5rem;">Graceful Recovery</h3>
+                    <p style="font-size: 0.9rem; color: #495057;">Design robust error handling and recovery flows for users who face issues or long gaps between usage.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

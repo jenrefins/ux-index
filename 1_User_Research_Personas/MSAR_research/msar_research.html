@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSAR Design Research</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+          .header {
+            background: linear-gradient(135deg, #003D79 0%, #004A94 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .subsection {
+            margin-bottom: 30px;
+        }
+
+        .subsection h3 {
+            color: #1e3a8a;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .research-image {
+            max-width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .research-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Thumbnail images for table cells */
+        .thumbnail-image {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .thumbnail-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Full-size images for comparison sections */
+        .full-size-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .modal img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10001;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .pros-cons-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr 300px;
+            gap: 2px;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pros-cons-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pros-section, .cons-section, .examples-section {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .pros-section:nth-child(3n+1) {
+            background: #f8fafc;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: #dc2626;
+            font-style: italic;
+        }
+
+        .note {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .reference-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reference-links li {
+            margin-bottom: 8px;
+        }
+
+        .reference-links a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .reference-links a:hover {
+            text-decoration: underline;
+        }
+
+        .helpful-scenarios {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .considerations {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .image-placeholder {
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MSAR Design Research</h1>
+        </div>
+
+        <div class="content">
+            <!-- Table of Contents -->
+            <div class="section">
+                <ul class="reference-links">
+                    <li><strong>Comparison table example</strong> 
+                        <ul>
+                            <li><a href="#comparison-table">Common App</a></li>
+                         
+                        </ul>
+                    </li>
+                    <li><strong>Comparative Research using Commonapp.org and PrincetonReview.com</strong>
+                        <ul>
+                            <li><a href="#common-app">Common App</a></li>
+                            <li><a href="#princeton-review">Princeton Review</a></li>
+                        </ul>
+                    </li>
+                    <li><strong>Scenario Exploration: Side/Left Navigation, Tabbed Navigation and Pagination</strong>
+                        <ul>
+                            <li><a href="#side-left-navigation">Side/Left Navigation</a></li>
+                            <li><a href="#tabbed-navigation">Tabbed Navigation</a></li>
+                            <li><a href="#pagination">Pagination</a></li>
+                              
+                            
+                        </ul>
+                    </li>
+                    <li><strong><a href="#guided-search">Guided Search/Filter Form examples</a></strong></li>
+                </ul>
+            </div>
+
+            <!-- Comparison table examples -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 id="comparison-table">Comparison table example</h2>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="comparison-tables">Common App</h3>
+                    <!-- INSTRUCTIONS: Save your comparison table screenshot as "common-app-comparison.png" in the images folder -->
+                    <div class="image-container">
+                        <img src="images/comparison_table.png" alt="Common App Comparison Table" class="full-size-image" onclick="openModal(this.src)">
+                        <!-- OPTIONAL: Add more comparison images by copying the line above and changing the filename -->
+                  </div>
+              </div>
+
+                
+            </div>
+
+            <!-- Comparative Research -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Comparative Research using Commonapp.org and PrincetonReview.com</h2>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="common-app">Common App</h3>
+                    <p><a href="#">📝 Apply to college with Common App | Your future starts here</a> is a non-profit organization that offers a standardized college application platform for students to apply to multiple colleges and universities in the US and other countries. It simplifies the application process by allowing students to create a single application with standard questions about their personal and academic background, essays, and supplemental materials.</p>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70%;">Benefits</th>
+                                <th style="width: 30%;">Screenshots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Simple and intuitive interface:</strong> Clean and easy-to-use interface that is designed to make the application process as straightforward as possible. Users can easily navigate through the site, find the information they need, and complete their applications with minimal confusion.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "common-app-1a.png", "common-app-1b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/CommonApp/CA_dashboard.png" alt="Common App Simple Interface" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <img src="images/CommonApp/dashboard.png" alt="Common App Navigation" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <!-- ADD MORE: Copy a line above and change filename (1c, 1d, etc.) -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Responsive design:</strong> Optimized for a variety of devices, including desktop computers, laptops, tablets, and smartphones. This allows users to access the site from anywhere and complete their applications on the go. Heavy on the mobile usage, almost mobile-first.
+                                    <div class="note">We are not designing for mobile-first, but it will be important to keep the experience as consistent as possible on mobile/tablet.</div>
+                                </td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "common-app-2a.png", "common-app-2b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/CommonApp/CA_mobile_mycolleges.png" alt="Common App Desktop View" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <img src="images/CommonApp/CA_mobile_schoolprofile.png" alt="Common App Mobile View" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Personalized dashboard:</strong> Once users create an account, they are taken to a personalized dashboard that displays their application status, to-do list, and deadlines. This helps users stay on track and ensure that they complete all of the necessary steps in the application process. <span class="highlight">(can borrow from this for the Notes section?)</span></td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "common-app-3a.png", "common-app-3b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/CommonApp/CA_dashboard.png" alt="Common App Dashboard" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Search Results:</strong> Search results are more compact and include less information taking up less screen real estate.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "common-app-4a.png", "common-app-4b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/CommonApp/CA_search_results.png" alt="Common App Search Results" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. My Colleges:</strong> Use of accordion menu in the left column listing all of the favorited schools which expand and collapse making better use of left column screen real estate. Similar accordion approach was used for SRH, only going 3 levels deep.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "common-app-5a.png", "common-app-5b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/CommonApp/CA_mycolleges.png" alt="Common App My Colleges Collapsed" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <img src="images/CommonApp/CA_mobile_mycolleges.png" alt="Common App My Colleges Expanded" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+							<tr>
+                                <td><strong>7. Help center:</strong> Comprehensive help center that provides answers to frequently asked questions, troubleshooting tips, and other resources to help users complete their applications. The right sidebar help content is available throughout the application process and changes based on what particular step the user is completing. We could do something similar for MSAR though that may require content creation.<br></td>
+<td>
+                  <!-- INSTRUCTIONS: Save screenshots as "common-app-5a.png", "common-app-5b.png", etc. -->
+                  <div class="image-container">
+                      <img src="images/CommonApp/CA_help_1.png" alt="Common App My Colleges Collapsed" class="thumbnail-image" onclick="openModal(this.src)">
+                  </div>
+                </td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="note">
+                        Provides a user-friendly and comprehensive platform for test prep and college admissions and offers a variety of tools and resources to help students achieve their educational goals and make informed decisions about their future.
+                        <br><br>
+                        <strong>What can we borrow from this for MSAR?</strong> A sidebar possibly? Include a sidebar on the right-hand side of the page with links to related content, such as frequently asked questions (the help tutorial), a glossary of terms, or a contact form for additional questions.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="princeton-review">Princeton Review</h3>
+                    <p><a href="#">📚 Test Prep Tutoring | Online Test Preparation | The Princeton Review</a></p>
+                    <p>Princeton Review is an educational services company that provides test preparation courses, tutoring services, and admissions resources for students.</p>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70%;">Benefits</th>
+                                <th style="width: 30%;">Screenshots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1. Simple and intuitive interface:</strong> Simple and clean interface that makes it easy for users to navigate and find the information they need. The main navigation menu is easy to use and provides quick access to different sections of the site.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-1a.png", "princeton-1b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/PR_HOME.png" alt="Princeton Review Home Interface" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2. Responsive design:</strong> Optimized for different devices and screen sizes, including desktop computers, laptops, tablets, and smartphones which ensures that users can access the site from any device and have a seamless experience.
+                                    <div class="highlight">We are not designing for mobile-first, but it will be important to keep the experience as consistent as possible on mobile/tablet. Thinking of the left nav in mobile.</div>
+                                </td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-2a.png", "princeton-2b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/PR_myschools_mobile.png" alt="Princeton Review Desktop" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <img src="images/Princeton_Review/PR_search_results_mobile.png" alt="Princeton Review Mobile" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>3. Personalized dashboard:</strong> Once users create an account, they are taken to a personalized dashboard that displays their progress and test scores. This helps users track their progress and identify areas where they need to improve.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-3a.png", "princeton-3b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/online_help-tour-2-study_practice_tests.png" alt="Princeton Review Dashboard" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>4. Search Results:</strong> Search results are more compact and include less information taking up less screen real estate.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-4a.png", "princeton-4b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/PR_search_results.png" alt="Princeton Review Search Results" class="thumbnail-image" onclick="openModal(this.src)">
+                                        <img src="images/Princeton_Review/PR_search_results_mobile.png" alt="Princeton Review Compact View" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>5. School Profile Pages:</strong> Includes a carousel feature (which has been mentioned as "could have") along with a background image. Simple tabbed navigation within the body of the page which is an idea worth exploring, without the right column perhaps?
+                                    <div class="note">We would need to augment the functionality here to include images (if it doesn't already) and enhance the way it looks: <a href="#">Component Library</a><br>
+                                    <a href="#">American University of Antigua (AUA) College of Medicine - The Princeton Review Med School Listings</a></div>
+                                </td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-5a.png", "princeton-5b.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/PR_school_profile.png" alt="Princeton Review School Profile" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>6. Test prep tools:</strong> Offers a variety of test prep tools, including practice tests, study materials, and tutoring services. These tools are designed to help students prepare for standardized tests like the SAT, ACT, and GRE.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-checklist-a.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/test_prep_tools.png" alt="Princeton Review Checklist" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                           
+                          
+                          
+                          <tr>
+                                <td><strong>7. User reviews and ratings:</strong> Includes user reviews and ratings for test prep services and college programs. This information can help users make informed decisions about which services to use and which programs to apply to.</td>
+                                <td>
+                                    <!-- INSTRUCTIONS: Save screenshots as "princeton-reviews-a.png", etc. -->
+                                    <div class="image-container">
+                                        <img src="images/Princeton_Review/pr_tabbed_nav+chartsize.png" alt="Princeton Review User Reviews" class="thumbnail-image" onclick="openModal(this.src)">
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="note">
+                        <a href="#">📚 Test Prep Tutoring | Online Test Preparation | The Princeton Review</a> is designed to provide a user-friendly and comprehensive platform for test prep and college admissions and offers a variety of tools and resources to help students achieve their educational goals and make informed decisions about their future.
+                        <br><br>
+                        <strong>Commonalities between Common App and Princeton Review:</strong> More compact Search results pages, personalized dashboards, responsive design which works well, help content is readily available during the processes.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scenario Exploration -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Scenario Exploration: Side/Left Navigation, Tabbed Navigation and Pagination</h2>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="side-left-navigation">Side/Left Navigation:</h3>
+                    
+                    <div class="pros-cons-table">
+                      <div class="pros-cons-header">Pros</div>
+                        <div class="pros-cons-header">Cons</div>
+                        <div class="pros-cons-header">Examples</div>
+
+                        <div class="pros-section">
+                            <ul>
+                                <li><strong>Visibility:</strong> More visible than tabbed navigation, as it is usually located on the left of the page.</li>
+                                <li><strong>Scannability:</strong> Can be easier for users to scan and find the content they are looking for, particularly if the navigation is well-organized with clear labels.</li>
+                                <li><strong>Consistency:</strong> Common design pattern that users are familiar with, so incorporating it into a site can help create a sense of consistency and familiarity.</li>
+                                <li><strong>Customization:</strong> Also highly customizable and can allow for a range of design options, for example, accordion menus as in the Common App or Students & Residents Hub</li>
+                            </ul>
+                        </div>
+
+                        <div class="cons-section">
+                            <ul>
+                                <li><strong>Space-consuming:</strong> Can take up a significant amount of screen real estate, particularly on smaller screens or when there are many items in the navigation. <span class="highlight">Currently in the GCL, the mobile version of this is just a list above the content area and not within a hamburger/drop-down menu.</span></li>
+                                <li><strong>Navigation:</strong> Might cause users to scroll down the page to access lower items in the navigation, which can be inconvenient for long lists.</li>
+                                <li><strong>Limited customization:</strong> Can be more difficult to customize and may not allow for as much flexibility in terms of design or layout.</li>
+                            </ul>
+                        </div>
+
+                        <div class="examples-section">
+                            <!-- INSTRUCTIONS: Save screenshots as "left-nav-a.png", "left-nav-b.png", etc. -->
+                            <div class="image-container">
+                                <img src="images/CommonApp/CA_accordion_profilepage.png" alt="Common App Left Navigation" class="thumbnail-image" onclick="openModal(this.src)">
+                                <img src="images/CommonApp/CA_mobile_mycolleges.png" alt="Left Nav Collapsed Mobile" class="thumbnail-image" onclick="openModal(this.src)">
+                            </div>
+</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="tabbed-navigation">Tabbed Navigation</h3>
+                    
+                    <div class="pros-cons-table">
+                      <div class="pros-cons-header">Pros</div>
+                        <div class="pros-cons-header">Cons</div>
+                        <div class="pros-cons-header">Examples</div>
+
+                        <div class="pros-section">
+                            <ul>
+                                <li><strong>Space-saving:</strong> Can be a way to save space on a page by allowing users to toggle between different sections without requiring them to navigate to a separate page. (Referencing Princeton Review)</li>
+                                <li><strong>Navigation:</strong> In certain cases, it's easier for users to navigate between different sections of a page without losing their place or having to scroll back up to the top of the page.</li>
+                                <li><strong>Organization:</strong> Helps organize large amounts of content into more manageable sections, making it easier for users to find the information they need. (Referencing Princeton Review)</li>
+                                <li><strong>Consistency:</strong> Common design pattern that users are familiar with and incorporating them into a site can help create a sense of consistency and familiarity.</li>
+                            </ul>
+                        </div>
+
+                        <div class="cons-section">
+                            <ul>
+                                <li><strong>Limited visibility:</strong> Sometimes are less visible than side navigation, particularly if they are located above or below the main content area. Can make it harder for users to find and use while scrolling.</li>
+                                <li><strong>Limited labeling:</strong> May not provide enough space for clear labeling of each tab, particularly if there are many tabs or if the labels are long.</li>
+                                <li><strong>Limited content:</strong> Might not be suitable for all types of content, as they may not provide enough space or flexibility for more complex or detailed information.</li>
+                            </ul>
+                        </div>
+
+                        <div class="examples-section">
+                            <!-- INSTRUCTIONS: Save screenshots as "tabbed-nav-a.png", "tabbed-nav-b.png", etc. -->
+                            <div class="image-container">
+                                <img src="images/Princeton_Review/pr_tabbed_nav+chartsize.png" alt="Princeton Review Tabbed Navigation" class="thumbnail-image" onclick="openModal(this.src)">
+                                <img src="images/Princeton_Review/PR_myschools.png" alt="Tabbed Navigation Example" class="thumbnail-image" onclick="openModal(this.src)">
+                            </div>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 15px;">Princeton Review<br><br>Tabs work for Princeton Review because there is minimal content to display on profile pages. We have much more content, so would recommend to go with the newer version of the left nav from the GCL.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 id="pagination" style="margin-top: 40px;">Pagination</h3>
+                    
+                    <div class="helpful-scenarios">
+                        <strong>Helpful Scenarios:</strong>
+                        <ul>
+                            <li><strong>Large Sets of Content:</strong> Organize content into sections or categories for easier access.</li>
+                            <li><strong>Reducing Scrolling:</strong> Prevent excessive scrolling on long pages or articles.</li>
+                            <li><strong>Performance Optimization:</strong> Improve page load times, especially for content-rich sites.</li>
+                            <li><strong>Enhanced User Experience:</strong> Create structured and organized navigation.</li>
+                            <li><strong>Clear Content Separation:</strong> Signify transitions between different sections of content. <span class="highlight">Currently on MSAR there are no previous/next links used in navigating ALL schools returned in the search results. Worth exploring.</span></li>
+                      </ul>
+                  </div>
+
+                    <div class="considerations">
+                        <strong>Considerations:</strong>
+                        <ul>
+                            <li><strong>Fragmented Content:</strong> Avoid excessive pagination for small, fragmented content.</li>
+                            <li><strong>Inefficiency for Short Content:</strong> For very short content, pagination may not be necessary.</li>
+                            <li><strong>SEO Considerations:</strong> Be mindful of potential SEO impacts.</li>
+                            <li><strong>Mobile Optimization:</strong> Ensure a mobile-friendly experience with responsive design.</li>
+                        </ul>
+                    </div>
+
+                    <h3 id="pagination">Floating Pagination Pros and Cons:</h3>
+                    
+                    <div class="pros-cons-table">
+                      <div class="pros-cons-header">Pros</div>
+                        <div class="pros-cons-header">Cons</div>
+                        <div class="pros-cons-header">Examples</div>
+
+                        <div class="pros-section">
+                            <ul>
+                                <li><strong>Improved Accessibility:</strong> Provides easy access to pagination controls without requiring users to scroll back to the top of long pages.</li>
+                                <li><strong>Enhanced User Experience:</strong> Users can navigate through lengthy content more efficiently, saving time and effort.</li>
+                                <li><strong>Smooth Scrolling:</strong> Allows for a seamless scrolling experience, as users can move through content continuously without interruptions. <span class="highlight">Would be helpful if we do NOT break up the school profile pages and keep it as one long scroll.</span></li>
+                                <li><strong>User-Friendly:</strong> Familiarity with pagination controls (e.g., next and previous buttons) makes it user-friendly and intuitive.</li>
+                                <li><strong>Time-Saving:</strong> Users don't have to perform extra scrolling actions to navigate to different pages of content.</li>
+                            </ul>
+                        </div>
+
+                        <div class="cons-section">
+                            <ul>
+                                <li><strong>Visual Clutter:</strong> On pages with limited content, floating pagination may introduce unnecessary visual elements that clutter the interface.</li>
+                                <li><strong>Potential Obscuration:</strong> It may cover or obscure important content or functionality on certain pages with specific layouts.</li>
+                                <li><strong>Design Incompatibility:</strong> Floating pagination might not align well with certain design styles or fixed layouts.</li>
+                                <li><strong>Reduced Screen Space:</strong> On smaller screens, floating pagination may consume valuable screen real estate, impacting content visibility.</li>
+                                <li><strong>Context Sensitivity:</strong> Its appropriateness depends on the specific page's content length and layout; Not universally suitable.</li>
+                            </ul>
+                        </div>
+
+                        <div class="examples-section">
+                            <!-- INSTRUCTIONS: Save screenshots as "floating-pagination-a.png", "floating-pagination-b.png", etc. -->
+                            <div class="image-container">
+                                <img src="images/floating_pagination/faculty_data.png" alt="Component Library Pagination" class="thumbnail-image" onclick="openModal(this.src)">
+                                <img src="images/floating_pagination/pubmed.png" alt="PubMed Pagination Style" class="thumbnail-image" onclick="openModal(this.src)">
+                            </div>
+                           
+                        </div>
+                    </div>
+              </div>
+            </div>
+
+            <!-- Guided Search/Filter Form examples -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 id="guided-search">Guided Search/Filter Form examples</h2>
+                </div>
+                
+                <div class="subsection">
+                    <p><a href="#">🔍 Explorer - Lead Form</a></p>
+                    <h3>Med School Explorer</h3>
+                    <!-- INSTRUCTIONS: Save your Med School Explorer screenshot as "med-school-explorer.png" -->
+                    <div class="image-container">
+                        <img src="images/MedSchool_Explorer/home.png" alt="Med School Explorer Interface" class="full-size-image" onclick="openModal(this.src)">
+                        <!-- OPTIONAL: Add more explorer images by copying the line above and changing the filename -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for image viewing -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Screenshot">
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            if (modal && modalImg) {
+                modal.style.display = 'block';
+                modalImg.src = imageSrc;
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Close modal when clicking outside the image
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
