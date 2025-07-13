@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waypoint - Travel Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    
+    .size-indicator {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 10px;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      font-weight: 500;
+    }
+    
+    .iframe-wrapper {
+      position: relative;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .responsive-iframe {
+      border: none;
+      display: block;
+      background: white;
+    }
+    
+    /* Desktop: 1280px and above */
+    @media (min-width: 1280px) {
+      .iframe-wrapper {
+        width: 1280px;
+        height: 800px;
+      }
+      .responsive-iframe {
+        width: 1280px;
+        height: 800px;
+      }
+    }
+    
+    /* Tablet: 800px to 1279px */
+    @media (min-width: 800px) and (max-width: 1279px) {
+      .iframe-wrapper {
+        width: 800px;
+        height: 600px;
+      }
+      .responsive-iframe {
+        width: 800px;
+        height: 600px;
+      }
+    }
+    
+    /* Mobile: Below 800px */
+    @media (max-width: 799px) {
+      .container {
+        padding: 10px;
+      }
+      .iframe-wrapper {
+        width: 375px;
+        height: 600px;
+        margin: 0 auto;
+      }
+      .responsive-iframe {
+        width: 375px;
+        height: 600px;
+      }
+    }
+    
+    /* Handle very small screens */
+    @media (max-width: 395px) {
+      .iframe-wrapper {
+        width: calc(100vw - 20px);
+        max-width: 375px;
+      }
+      .responsive-iframe {
+        width: calc(100vw - 20px);
+        max-width: 375px;
+      }
+    }
+    
+    .footer-note {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      max-width: 600px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="size-indicator" id="sizeIndicator">Loading...</div>
+    
+    <div class="iframe-wrapper">
+      <iframe
+        class="responsive-iframe"
+        src="https://stream-chord-22058952.figma.site/"
+        allowfullscreen
+        scrolling="yes"
+        loading="lazy">
+        <p>Your browser doesn't support iframes. <a href="https://stream-chord-22058952.figma.site/">Visit the site directly</a>.</p>
+      </iframe>
+    </div>
+    
+    <div class="footer-note">
+      This site displays at optimized breakpoints: 1280px (desktop), 800px (tablet), and 375px (mobile).
+    </div>
+  </div>
+  
+  <script>
+    function updateSizeIndicator() {
+      const indicator = document.getElementById('sizeIndicator');
+      const width = window.innerWidth;
+      
+      if (width >= 1280) {
+        indicator.textContent = 'Desktop View (1280px)';
+      } else if (width >= 800) {
+        indicator.textContent = 'Tablet View (800px)';
+      } else {
+        indicator.textContent = 'Mobile View (375px)';
+      }
+    }
+    
+    // Update on load and resize
+    window.addEventListener('load', updateSizeIndicator);
+    window.addEventListener('resize', updateSizeIndicator);
+    
+    // Initial call
+    updateSizeIndicator();
+  </script>
+</body>
+</html>
