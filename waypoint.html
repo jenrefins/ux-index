@@ -38,7 +38,12 @@
       z-index: 1000;
       font-weight: 500;
     }
-    
+    /* Move tooltip below hamburger menu on mobile */
+    @media (max-width: 799px) {
+      .size-indicator {
+        top: 70px;
+      }
+    }
     .iframe-wrapper {
       position: relative;
       background: white;
